@@ -14,10 +14,8 @@ public abstract class Employee {
     public static final int PAYMENT_EVERY_MONDAY = 4;
     public static final int PAYMENT_EVERY_FRIDAY = 5;
     public static final int PAYMENT_EVERY_OTHER_MONDAY = 6;
-
     private int id;
     private int payment_day;
-
     private String name;
     private String address;
     private SindicateWorker sindicateCard;
