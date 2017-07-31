@@ -1,80 +1,68 @@
 package com.company;
 
+import java.util.Calendar;
+
 /**
  * Created by alunoic on 28/07/17.
  */
 public class CheckInOut {
-    private int dia, mes, ano, hora_ini, hora_fim, min_ini,min_fim;
 
+    private Calendar entrada;
+    private Calendar saida;
 
     public CheckInOut(int dia, int mes, int ano, int hora_ini, int hora_fim, int min_ini, int min_fim) {
-        this.dia = dia;
-        this.mes = mes;
-        this.ano = ano;
-        this.hora_ini = hora_ini;
-        this.hora_fim = hora_fim;
-        this.min_ini = min_ini;
-        this.min_fim = min_fim;
+        entrada = Calendar.getInstance();
+        saida = Calendar.getInstance();
 
+        entrada.set(ano, mes, dia, hora_ini, min_ini);
+        saida.set(ano, mes, dia, hora_fim, min_fim);
     }
 
-    public int getDia() {
-        return dia;
+    public Calendar getEntrada() {
+        return entrada;
     }
 
-    public void setDia(int dia) {
-        this.dia = dia;
+    public void setEntrada(Calendar entrada) {
+        this.entrada = entrada;
     }
 
-    public int getMes() {
-        return mes;
+    public Calendar getSaida() {
+        return saida;
     }
 
-    public void setMes(int mes) {
-        this.mes = mes;
+    public void setSaida(Calendar saida) {
+        this.saida = saida;
     }
 
-    public int getAno() {
-        return ano;
+    public CheckInOut(Calendar entrada, Calendar saida) {
+        this.entrada = entrada;
+        this.saida = saida;
     }
 
-    public void setAno(int ano) {
-        this.ano = ano;
+    public float getWorkedHours() {
+        int start_time = entrada.get(Calendar.HOUR_OF_DAY) * 60 + entrada.get(Calendar.MINUTE);
+        int end_time = saida.get(Calendar.HOUR_OF_DAY) * 60 + saida.get(Calendar.MINUTE);
+        int diferrence = end_time - start_time;
+        return (float) (diferrence) / 60;
     }
 
-    public int getHora_ini() {
-        return hora_ini;
+    public boolean happennedBetween(Calendar start, Calendar end) {
+      /*  Main.PrintCalendar(start);
+        Main.PrintCalendar(end);
+        Main.PrintCalendar(this.entrada);
+        System.out.println("\n");
+*/
+
+        if (entrada.get(Calendar.YEAR) >= start.get(Calendar.YEAR) && entrada.get(Calendar.YEAR) <= end.get(Calendar.YEAR)) {
+            if (entrada.get(Calendar.MONTH) >= start.get(Calendar.MONTH) && entrada.get(Calendar.MONTH) <= end.get(Calendar.MONTH)) {
+                if (entrada.get(Calendar.DAY_OF_MONTH) >= start.get(Calendar.DAY_OF_MONTH) && entrada.get(Calendar.DAY_OF_MONTH) <= end.get(Calendar.DAY_OF_MONTH)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
-
-    public void setHora_ini(int hora_ini) {
-        this.hora_ini = hora_ini;
-    }
-
-    public int getHora_fim() {
-        return hora_fim;
-    }
-
-    public void setHora_fim(int hora_fim) {
-        this.hora_fim = hora_fim;
-    }
-
-    public int getMin_ini() {
-        return min_ini;
-    }
-
-    public void setMin_ini(int min_ini) {
-        this.min_ini = min_ini;
-    }
-
-    public int getMin_fim() {
-        return min_fim;
-    }
-
-    public void setMin_fim(int min_fim) {
-        this.min_fim = min_fim;
-    }
-
-
 
 
 }

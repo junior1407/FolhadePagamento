@@ -1,11 +1,21 @@
 package com.company;
 
+import java.util.Calendar;
+
 /**
  * Created by alunoic on 28/07/17.
  */
 public class Sales {
-    private int dia,mes,ano;
+    private int dia, mes, ano;
     private float value;
+
+    public Sales(int dia, int mes, int ano, float value) {
+
+        this.dia = dia;
+        this.mes = mes;
+        this.ano = ano;
+        this.value = value;
+    }
 
     public int getDia() {
         return dia;
@@ -38,12 +48,22 @@ public class Sales {
     public void setValue(float value) {
         this.value = value;
     }
+    public boolean happennedBetween(Calendar start, Calendar end) {
+      /*  Main.PrintCalendar(start);
+        Main.PrintCalendar(end);
+        Main.PrintCalendar(this.entrada);
+        System.out.println("\n");
+*/
 
-    public Sales(int dia, int mes, int ano, float value) {
+        if (ano>= start.get(Calendar.YEAR) && ano <= end.get(Calendar.YEAR)) {
+            if (mes >= start.get(Calendar.MONTH) && mes <= end.get(Calendar.MONTH)) {
+                if (dia >= start.get(Calendar.DAY_OF_MONTH) && dia <= end.get(Calendar.DAY_OF_MONTH)) {
+                    return true;
+                }
+            }
+        }
 
-        this.dia = dia;
-        this.mes = mes;
-        this.ano = ano;
-        this.value = value;
+        return false;
     }
+
 }

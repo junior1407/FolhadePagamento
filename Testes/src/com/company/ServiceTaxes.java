@@ -1,11 +1,21 @@
 package com.company;
 
+import java.util.Calendar;
+
 /**
  * Created by alunoic on 28/07/17.
  */
 public class ServiceTaxes {
-    private int dia,mes,ano;
+    private int dia, mes, ano;
     private float value;
+
+    public ServiceTaxes(int dia, int mes, int ano, float value) {
+
+        this.dia = dia;
+        this.mes = mes;
+        this.ano = ano;
+        this.value = value;
+    }
 
     public int getDia() {
         return dia;
@@ -39,11 +49,17 @@ public class ServiceTaxes {
         this.value = value;
     }
 
-    public ServiceTaxes(int dia, int mes, int ano, float value) {
+    public boolean happennedBetween(Calendar start, Calendar end) {
 
-        this.dia = dia;
-        this.mes = mes;
-        this.ano = ano;
-        this.value = value;
+
+        if (ano >= start.get(Calendar.YEAR) && ano <= end.get(Calendar.YEAR)) {
+            if (mes >= start.get(Calendar.MONTH) && mes <= end.get(Calendar.MONTH)) {
+                if (dia >= start.get(Calendar.DAY_OF_MONTH) && dia <= end.get(Calendar.DAY_OF_MONTH)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -1,9 +1,9 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
- *
  * Created by alunoic on 28/07/17.
  */
 public class CommissionedWorker extends Employee {
@@ -16,14 +16,17 @@ public class CommissionedWorker extends Employee {
         super(name, address, paymentMethod, id);
         this.fixed_sallary = fixed_sallary;
         this.commission_percentage = commission_percentage;
-        this.sales=new ArrayList<Sales>();
+        this.sales = new ArrayList<Sales>();
+        setPayment_day(Employee.PAYMENT_EVERY_OTHER_MONDAY);
     }
+
 
     public CommissionedWorker(String name, String address, SindicateWorker sindicateCard, String paymentMethod, float fixed_sallary, float commission_percentage, int id) {
         super(name, address, sindicateCard, paymentMethod, id);
         this.fixed_sallary = fixed_sallary;
         this.commission_percentage = commission_percentage;
-        this.sales=new ArrayList<Sales>();
+        this.sales = new ArrayList<Sales>();
+        setPayment_day(Employee.PAYMENT_EVERY_OTHER_MONDAY);
     }
 
     public float getFixed_sallary() {
@@ -50,8 +53,25 @@ public class CommissionedWorker extends Employee {
         this.sales = sales;
     }
 
-    public void AddSale(Sales sale)
-    {
+    public void AddSale(Sales sale) {
         sales.add(sale);
     }
+
+
+    public ArrayList<Sales> getSalesPeriodTime(Calendar start, Calendar end) {
+
+
+        ArrayList<Sales> selectedSales = new ArrayList<Sales>();
+        for (Sales curr : sales) {
+
+            if (curr.happennedBetween(start, end)) {
+                selectedSales.add(curr);
+            }
+        }
+
+        return selectedSales;
+        //return (ArrayList<CheckInOut>) cards.stream().filter(card -> card.happennedBetween(start, end)).collect(Collectors.toList());
+
+    }
+
 }
