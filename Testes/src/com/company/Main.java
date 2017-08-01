@@ -15,6 +15,7 @@ public class Main {
         ArrayList<Employee> employeesList = new ArrayList<Employee>();
         Stack<Backup> undo = new Stack<>();
         Stack<Backup> redo = new Stack<>();
+
         Agenda agenda = new Agenda();
 
         Scanner scannerInt = new Scanner(System.in);
@@ -374,10 +375,68 @@ public class Main {
                                 }
                                 break;
                             }
-                            case 6: {//change sindicate id
+                            case 6: {
+                                if (curr.getSindicateCard()==null) {
+                                    System.out.println("You're not a sindicate member!");
+                                }
+                                else
+                                {
+                                    System.out.println("What would you like your new ID to be?");
+                                    int new_id = scannerInt.nextInt();
+                                    int found=0;
+                                    for(Employee e: employeesList)
+                                    {
+                                        if (!(e.getSindicateCard() == null))
+                                        {
+                                            if (e.getSindicateCard().getId()==new_id)
+                                            {
+                                                found=1;
+                                            }
+                                        }
+                                    }
+                                    if (found==1)
+                                    {
+                                        System.out.println("This ID is already taken!");
+                                    }
+                                    else
+                                    {
+                                        curr.getSindicateCard().setId(new_id);
+                                        System.out.println("Done!");
+                                    }
+                                }
+
                                 break;
                             }
-                            case 7: {//change sindicate contribution
+                            case 7: {
+                                if (curr.getSindicateCard()==null) {
+                                    System.out.println("You're not a sindicate member!");
+                                }
+                                else
+                                {
+                                    System.out.println("How much would you like to contribute?");
+                                    int new_id = scannerInt.nextInt();
+                                    int found=0;
+                                    for(Employee e: employeesList)
+                                    {
+                                        if (!(e.getSindicateCard() == null))
+                                        {
+                                            if (e.getSindicateCard().getId()==new_id)
+                                            {
+                                                found=1;
+                                            }
+                                        }
+                                    }
+                                    if (found==1)
+                                    {
+                                        System.out.println("This ID is already taken!");
+                                    }
+                                    else
+                                    {
+                                        curr.getSindicateCard().setId(new_id);
+                                        System.out.println("Done!");
+                                    }
+                                }
+
                                 break;
                             }
                         }
@@ -799,14 +858,30 @@ public class Main {
                 }
                 case 9: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
-                    //Change someone's payment Agenda
+
+                    System.out.println("What payment form do you want?");
+                    System.out.printf("1 - First day of the monty\n2 - Seventh day of the month\n3- Last WorkDay of the Month\n4 - Every Monday\n5- Every Friday\n6- Every other Monday\n");
+                    int newPaymentAgenda = scannerInt.nextInt();
+                    System.out.println("Type the employee ID");
+                    int id = scannerInt.nextInt();
+                    int pos = -1;
+                    for (int i = 0; i < employeesList.size(); i++) {
+                        if (employeesList.get(i).getId() == id) {
+                            pos = i;
+                            break;
+                        }
+                    }
+                    if (pos != -1) {
+                        System.out.println("Employee not found");
+                    }
+                    else
+                    {
+                        employeesList.get(pos).setPayment_day(newPaymentAgenda);
+                        System.out.println("Done!");
+                    }
                     break;
                 }
-
-
             }
-
-
         } while (op != 0);
 
         scannerFloat.close();

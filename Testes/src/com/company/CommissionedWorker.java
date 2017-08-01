@@ -27,7 +27,8 @@ public class CommissionedWorker extends Employee {
         {
             copy.add(s.getCopy());
         }
-        return new CommissionedWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getFixed_sallary(),getCommission_percentage(),copy,getPayment_day());
+        return new CommissionedWorker(getName(),getAddress(),getSindicateCard().getCopy(),
+                getPaymentMethod(),getId(),getFixed_sallary(),getCommission_percentage(),copy,getPayment_day());
 
     }
 

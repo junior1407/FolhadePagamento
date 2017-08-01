@@ -7,6 +7,19 @@ public class Backup {
     private int sindicate_counter;
     private int employeee_counter;
 
+    public Backup(ArrayList<Employee> employees, int sindicate_counter, int employeee_counter) {
+        employees_list=new ArrayList<>();
+        for(Employee e: employees)
+        {
+            employees_list.add( e.getCopy());
+        }
+
+        this.sindicate_counter = sindicate_counter;
+        this.employeee_counter = employeee_counter;
+    }
+
+
+
     public ArrayList<Employee> getEmployees_list() {
         return employees_list;
     }
@@ -47,14 +60,5 @@ public class Backup {
     }
 
 
-    public Backup(ArrayList<Employee> employees, int sindicate_counter, int employeee_counter) {
-        employees_list=new ArrayList<>();
-        for(Employee e: employees)
-        {
-          employees_list.add( e.getCopy());
-    }
 
-        this.sindicate_counter = sindicate_counter;
-        this.employeee_counter = employeee_counter;
-    }
 }
