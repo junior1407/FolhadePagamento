@@ -5,6 +5,11 @@ public class Paycheck {
     private Employee employee;
     private float money;
 
+    public Paycheck getCopy()
+    {
+        return new Paycheck(employee.getCopy(), money);
+    }
+
     public Paycheck(Employee employee, float money) {
 
         this.employee = employee;

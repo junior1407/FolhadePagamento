@@ -12,11 +12,28 @@ public class SindicateWorker {
     private float fixed_tax;
     private ArrayList<ServiceTaxes> taxes;
 
+
+    public SindicateWorker getCopy()
+    {
+        ArrayList<ServiceTaxes> copy = new ArrayList<>();
+        for(ServiceTaxes s: taxes)
+        {
+            copy.add(s.getCopy());
+        }
+        return new SindicateWorker(id,fixed_tax, copy);
+    }
+
     public SindicateWorker(int id, float fixed_tax) {
 
         this.id = id;
         this.fixed_tax = fixed_tax;
         taxes = new ArrayList<ServiceTaxes>();
+    }
+
+    public SindicateWorker(int id, float fixed_tax, ArrayList<ServiceTaxes> taxes) {
+        this.id = id;
+        this.fixed_tax = fixed_tax;
+        this.taxes = taxes;
     }
 
     public ArrayList<ServiceTaxes> getTaxesPeriodTime(Calendar start, Calendar end) {

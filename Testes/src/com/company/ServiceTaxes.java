@@ -17,6 +17,12 @@ public class ServiceTaxes {
         this.value = value;
     }
 
+    public ServiceTaxes getCopy()
+    {
+        return new ServiceTaxes(dia,mes,ano,value);
+    }
+
+
     public int getDia() {
         return dia;
     }

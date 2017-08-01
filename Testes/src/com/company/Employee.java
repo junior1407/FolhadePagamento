@@ -25,6 +25,7 @@ public abstract class Employee {
     public Employee() {
     }
 
+    public abstract Employee getCopy();
     public Employee(String name, String address, String paymentMethod, int id) {
         this.name = name;
         this.address = address;

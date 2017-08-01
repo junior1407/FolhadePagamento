@@ -19,6 +19,17 @@ public class MonthlyWorker extends Employee {
         setPayment_day(Employee.PAYMENT_LAST_DAY_MONTH);
     }
 
+    public MonthlyWorker getCopy()
+    {
+        return new MonthlyWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getSallary(),getPayment_day());
+    }
+
+    public MonthlyWorker(String name, String address, SindicateWorker sindicateCard, String paymentMethod, int id, float sallary, int payment_day) {
+        super(name, address, sindicateCard, paymentMethod, id);
+        this.sallary = sallary;
+        setPayment_day(payment_day);
+    }
+
     public float getSallary() {
         return sallary;
     }

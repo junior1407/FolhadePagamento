@@ -10,6 +10,14 @@ public class CheckInOut {
     private Calendar entrada;
     private Calendar saida;
 
+
+    public CheckInOut  getCopy()
+    {
+        return new CheckInOut((Calendar)entrada.clone(), (Calendar)saida.clone());
+    }
+
+
+
     public CheckInOut(int dia, int mes, int ano, int hora_ini, int hora_fim, int min_ini, int min_fim) {
         entrada = Calendar.getInstance();
         saida = Calendar.getInstance();

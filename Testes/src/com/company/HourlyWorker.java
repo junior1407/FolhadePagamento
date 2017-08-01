@@ -14,6 +14,26 @@ public class HourlyWorker extends Employee {
 
     private ArrayList<CheckInOut> cards;
 
+    public HourlyWorker(String name, String address, SindicateWorker sindicateCard, String paymentMethod, int id, float hour_sallary, ArrayList<CheckInOut> cards, int payment_day) {
+        super(name, address, sindicateCard, paymentMethod, id);
+        this.hour_sallary = hour_sallary;
+        this.cards = cards;
+        setPayment_day(getPayment_day());
+    }
+
+    public HourlyWorker getCopy()
+    {
+        ArrayList<CheckInOut> copy = new ArrayList<>();
+        for(CheckInOut c: cards)
+        {
+            copy.add(c.getCopy());
+        }
+
+
+        return new HourlyWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getHour_sallary(),copy,getPayment_day());
+    }
+
+
     public HourlyWorker(String name, String address, String paymentMethod, float hour_sallary, int id) {
         super(name, address, paymentMethod, id);
         this.hour_sallary = hour_sallary;

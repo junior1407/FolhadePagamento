@@ -12,6 +12,27 @@ public class CommissionedWorker extends Employee {
     private float commission_percentage;
     private ArrayList<Sales> sales;
 
+    public CommissionedWorker(String name, String address, SindicateWorker sindicateCard, String paymentMethod, int id, float fixed_sallary, float commission_percentage, ArrayList<Sales> sales, int payment_day) {
+        super(name, address, sindicateCard, paymentMethod, id);
+        this.fixed_sallary = fixed_sallary;
+        this.commission_percentage = commission_percentage;
+        this.sales = sales;
+        setPayment_day(payment_day);
+    }
+
+    public CommissionedWorker getCopy()
+    {
+        ArrayList<Sales> copy = new ArrayList<>();
+        for(Sales s: sales)
+        {
+            copy.add(s.getCopy());
+        }
+        return new CommissionedWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getFixed_sallary(),getCommission_percentage(),copy,getPayment_day());
+
+    }
+
+
+
     public CommissionedWorker(String name, String address, String paymentMethod, float fixed_sallary, float commission_percentage, int id) {
         super(name, address, paymentMethod, id);
         this.fixed_sallary = fixed_sallary;

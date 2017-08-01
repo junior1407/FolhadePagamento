@@ -2,10 +2,7 @@ package com.company;
 
 import com.sun.corba.se.impl.naming.cosnaming.NamingUtils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -16,6 +13,8 @@ public class Main {
         int sindicate_counter = 0;
 
         ArrayList<Employee> employeesList = new ArrayList<Employee>();
+        Stack<Backup> undo = new Stack<>();
+        Stack<Backup> redo = new Stack<>();
         Agenda agenda = new Agenda();
 
         Scanner scannerInt = new Scanner(System.in);
@@ -33,6 +32,7 @@ public class Main {
             op = scannerInt.nextInt();
             switch (op) {
                 case 1: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type your name");
                     String name = scannerString.nextLine();
                     System.out.println("Type your address");
@@ -105,6 +105,7 @@ public class Main {
                     break;
                 }
                 case 2: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
                     int id = scannerInt.nextInt();
                     int pos = -1;
@@ -125,6 +126,7 @@ public class Main {
                 }
 
                 case 3: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
                     int id = scannerInt.nextInt();
                     int pos = -1;
@@ -166,6 +168,7 @@ public class Main {
                     break;
                 }
                 case 4: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
                     int id = scannerInt.nextInt();
                     //   employeesList.stream().filter(employee -> employee.getId()==id ).collect(Collectors.toList()).t.nextInt();
@@ -204,6 +207,7 @@ public class Main {
                     break;
                 }
                 case 5: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
                     int id = scannerInt.nextInt();
                     int pos = -1;
@@ -238,6 +242,7 @@ public class Main {
                     break;
                 }
                 case 6: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     //Alterar detalhes de um empregado Nome, Endereco, Tipo, Metodo de Pagamento, Sindicato?, Sindicato_id, Sindicato_Valor
 
                     System.out.println("Type the employee ID");
@@ -384,7 +389,7 @@ public class Main {
                     break;
                 }
                 case 7: {
-
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the day");
                     int day = scannerInt.nextInt();
                     System.out.println("Type the month");
@@ -752,15 +757,52 @@ public class Main {
 
                 }
                 case 8: {
+
+                    System.out.println("Do you want to UNDO(1) or REDO(2)?");
+                    int choose = scannerInt.nextInt();
+                    if (choose==1)
+                    {
+                        if (!undo.isEmpty())
+                        {
+                            Backup curr = new Backup(employeesList,sindicate_counter,employee_counter);
+                            redo.add(curr);
+                            Backup prev = undo.pop();
+                            employeesList =  prev.getEmployees_list();
+                            employee_counter = prev.getEmployeee_counter();
+                            sindicate_counter = prev.getEmployeee_counter();
+                            System.out.println("Done");
+                        }
+                        else
+                        {
+                            System.out.println("There aren't any options left");
+                        }
+                    }
+
+                    if (choose==2)
+                    {
+                        if (!redo.isEmpty())
+                        {
+                            Backup now = new Backup(employeesList,sindicate_counter,employee_counter);
+                            undo.add(now);
+                            Backup next = redo.pop();
+                            employeesList=next.getEmployees_list();
+                            sindicate_counter= next.getSindicate_counter();
+                            employee_counter=next.getEmployeee_counter();
+                            System.out.println("Done");
+                        }
+                        else
+                        {
+                            System.out.println("There aren't any options left");
+                        }
+                    }
                     break;
                 }
                 case 9: {
+                    undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     //Change someone's payment Agenda
                     break;
                 }
-                case 10: {
-                    break;
-                }
+
 
             }
 

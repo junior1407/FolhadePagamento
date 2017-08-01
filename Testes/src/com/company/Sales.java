@@ -17,6 +17,11 @@ public class Sales {
         this.value = value;
     }
 
+    public Sales getCopy()
+    {
+        return new Sales(dia,mes,ano,value);
+    }
+
     public int getDia() {
         return dia;
     }
