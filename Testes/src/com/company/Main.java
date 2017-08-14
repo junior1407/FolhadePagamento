@@ -6,7 +6,9 @@ import java.util.*;
 
 public class Main {
 
-
+    public static String stringMessage= "Type a valid String!";
+    public static String intMessage = "Type a valid Integer!";
+    public static String floatMessage= "Type a valid float number!";
     public static void main(String[] args) {
 
         int employee_counter = 0;
@@ -18,9 +20,10 @@ public class Main {
 
         Agenda agenda = new Agenda();
 
-        Scanner scannerInt = new Scanner(System.in);
-        Scanner scannerString = new Scanner(System.in);
-        Scanner scannerFloat = new Scanner(System.in);
+       // Scanner scannerInt = new Scanner(System.in);
+    //   Scanner scannerString = new Scanner(System.in);
+    //   Scanner scannerFloat = new Scanner(System.in);
+        Processor proc = new Processor();
         int op = 0;
 
         do {
@@ -30,20 +33,22 @@ public class Main {
                     + "07 - Generate Today's Paycheck\n08 - Undo/Redo\n09 - Payment Agenda\n"
                     + "10 - Create new Payment Agendas\n00 - Sair");
             System.out.println("Select the option you desire ");
-            op = scannerInt.nextInt();
+               op = proc.getInteger(intMessage);
+
             switch (op) {
                 case 1: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type your name");
-                    String name = scannerString.nextLine();
+                    String name =proc.getString(stringMessage,true);
+
                     System.out.println("Type your address");
-                    String address = scannerString.nextLine();
+                    String address =proc.getString(stringMessage,true);
                     System.out.println("Type your payment method");
-                    String paymentMethod = scannerString.nextLine();
+                    String paymentMethod = proc.getString(stringMessage,true);
                     System.out.println("Type 1 - Monthly Worker\nType 2 - Hourly Worker\nType 3 - Commissioned Worker");
-                    int type = scannerInt.nextInt();
+                    int type = proc.getInteger(intMessage);
                     System.out.println("Type 1 - If you participate in the Sindicate\nType 0 - If you DO NOT participate in the sindicate");
-                    int sindicate = scannerInt.nextInt();
+                    int sindicate = proc.getInteger(intMessage);
                     SindicateWorker sindicate_card = null;
                     int id_sindicate = -1;
                     int id_worker = employee_counter;
@@ -51,13 +56,13 @@ public class Main {
                         id_sindicate = sindicate_counter;
                         sindicate_counter++;
                         System.out.println("Type your contribbution to the sindicate");
-                        float fixed_tax = scannerFloat.nextFloat();
+                        float fixed_tax = proc.getFloat(floatMessage);
                         sindicate_card = new SindicateWorker(id_sindicate, fixed_tax);
                     }
                     if (type == 1) // Monthly
                     {
                         System.out.println("Type your sallary");
-                        float sallary = scannerFloat.nextFloat();
+                        float sallary = proc.getFloat(floatMessage);
                         MonthlyWorker curr;
                         if (sindicate_card == null) {
                             curr = new MonthlyWorker(name, address, paymentMethod, sallary, id_worker);
@@ -71,7 +76,7 @@ public class Main {
                     {
                         HourlyWorker curr;
                         System.out.println("Type your sallary/hour");
-                        float sallary = scannerFloat.nextFloat();
+                        float sallary = proc.getFloat(floatMessage);
 
                         if (sindicate_card == null) {
                             curr = new HourlyWorker(name, address, paymentMethod, sallary, id_worker);
@@ -85,9 +90,9 @@ public class Main {
                     if (type == 3) // Commissioned
                     {
                         System.out.println("Type your sallary ");
-                        float sallary = scannerFloat.nextFloat();
+                        float sallary = proc.getFloat(floatMessage);
                         System.out.println("Type your commission percentage");
-                        float commission_percentage = scannerFloat.nextFloat();
+                        float commission_percentage = proc.getFloat(floatMessage);
                         CommissionedWorker curr;
                         if (sindicate_card == null) {
                             curr = new CommissionedWorker(name, address, paymentMethod, sallary, commission_percentage, id_worker);
@@ -108,7 +113,7 @@ public class Main {
                 case 2: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
-                    int id = scannerInt.nextInt();
+                    int id = proc.getInteger(intMessage);
                     int pos = -1;
                     for (int i = 0; i < employeesList.size(); i++) {
                         if (employeesList.get(i).getId() == id) {
@@ -129,7 +134,7 @@ public class Main {
                 case 3: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
-                    int id = scannerInt.nextInt();
+                    int id = proc.getInteger(intMessage);
                     int pos = -1;
                     for (int i = 0; i < employeesList.size(); i++) {
                         if (employeesList.get(i).getId() == id) {
@@ -143,19 +148,19 @@ public class Main {
 
                             HourlyWorker curr = (HourlyWorker) employeesList.get(pos);
                             System.out.println("Type the day");
-                            int day = scannerInt.nextInt();
+                            int day = proc.getInteger(intMessage);
                             System.out.println("Type the day");
-                            int month = scannerInt.nextInt();
+                            int month = proc.getInteger(intMessage);
                             System.out.println("Type the day");
-                            int year = scannerInt.nextInt();
+                            int year = proc.getInteger(intMessage);
                             System.out.println("Type the day");
-                            int hour_init = scannerInt.nextInt();
+                            int hour_init = proc.getInteger(intMessage);
                             System.out.println("Type the day");
-                            int min_init = scannerInt.nextInt();
+                            int min_init = proc.getInteger(intMessage);
                             System.out.println("Type the day");
-                            int hour_final = scannerInt.nextInt();
+                            int hour_final = proc.getInteger(intMessage);
                             System.out.println("Type the day");
-                            int min_final = scannerInt.nextInt();
+                            int min_final = proc.getInteger(intMessage);
                             CheckInOut card = new CheckInOut(day, month - 1, year, hour_init, min_init, hour_final, min_final);
                             curr.AddCard(card);
                             System.out.println("Check In/Out Registered Successfuly!!!");
@@ -171,7 +176,7 @@ public class Main {
                 case 4: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
-                    int id = scannerInt.nextInt();
+                    int id = proc.getInteger(intMessage);
                     //   employeesList.stream().filter(employee -> employee.getId()==id ).collect(Collectors.toList()).t.nextInt();
                     int pos = -1;
 
@@ -187,13 +192,13 @@ public class Main {
                         if (employeesList.get(pos) instanceof CommissionedWorker) {
                             CommissionedWorker curr = (CommissionedWorker) employeesList.get(pos);
                             System.out.println("Type the day");
-                            int day = scannerInt.nextInt();
+                            int day = proc.getInteger(intMessage);
                             System.out.println("Type the month");
-                            int month = scannerInt.nextInt();
+                            int month = proc.getInteger(intMessage);
                             System.out.println("Type the year");
-                            int year = scannerInt.nextInt();
+                            int year = proc.getInteger(intMessage);
                             System.out.println("Type the value");
-                            float value = scannerInt.nextFloat();
+                            float value = proc.getFloat(floatMessage);
                             Sales sale = new Sales(day, month - 1, year, value);
                             curr.AddSale(sale);
                             System.out.println("Sale added successfuly!");
@@ -210,7 +215,7 @@ public class Main {
                 case 5: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the employee ID");
-                    int id = scannerInt.nextInt();
+                    int id = proc.getInteger(intMessage);
                     int pos = -1;
 
                     //  Employee curr =  employeesList.stream().filter(employee -> employee.getId()==id ).collect(Collectors.toList()).get(0);
@@ -224,13 +229,13 @@ public class Main {
                         if (employeesList.get(pos).getSindicateCard() != null) {
                             Employee curr = employeesList.get(pos);
                             System.out.println("Type the day");
-                            int day = scannerInt.nextInt();
+                            int day = proc.getInteger(intMessage);
                             System.out.println("Type the month");
-                            int month = scannerInt.nextInt();
+                            int month = proc.getInteger(intMessage);
                             System.out.println("Type the year");
-                            int year = scannerInt.nextInt();
+                            int year = proc.getInteger(intMessage);
                             System.out.println("Type the value");
-                            float value = scannerInt.nextFloat();
+                            float value = proc.getFloat(floatMessage);
                             ServiceTaxes service = new ServiceTaxes(day, month - 1, year, value);
                             curr.getSindicateCard().AddService(service);
                             System.out.println("Service Tax added successfuly!");
@@ -247,7 +252,7 @@ public class Main {
                     //Alterar detalhes de um empregado Nome, Endereco, Tipo, Metodo de Pagamento, Sindicato?, Sindicato_id, Sindicato_Valor
 
                     System.out.println("Type the employee ID");
-                    int id = scannerInt.nextInt();
+                    int id = proc.getInteger(intMessage);
                     int pos = -1;
 
                     //  Employee curr =  employeesList.stream().filter(employee -> employee.getId()==id ).collect(Collectors.toList()).get(0);
@@ -262,24 +267,24 @@ public class Main {
                         System.out.println("What would you like to change about this Employee?");
                         System.out.println("1-Name\n2-Address\n3-Type of Employee\n4-Paymenth Method\n5-Change his membership in the sindicate\n"
                                 + "6-Change his sindicate_id\n7-Change his sindicate_contribution");
-                        int change = scannerInt.nextInt();
+                        int change = proc.getInteger(intMessage);
                         switch (change) {
                             case 1: {
                                 System.out.println("Type your new name");
-                                String name = scannerString.nextLine();
+                                String name = proc.getString(stringMessage,true);
                                 curr.setName(name);
                                 break;
                             }
                             case 2: {
                                 System.out.println("Type the new Address");
-                                String address = scannerString.nextLine();
+                                String address = proc.getString(stringMessage,true);
                                 curr.setAddress(address);
                                 break;
                             }
                             case 3: {
                                 System.out.println("What do you want to be?");
                                 System.out.println("Type 1 - Monthly Worker\nType 2 - Hourly Worker\nType 3 - Commissioned Worker");
-                                int type = scannerInt.nextInt();
+                                int type = proc.getInteger(intMessage);
 
 
                                 if (type == 1) // Monthly
@@ -287,7 +292,7 @@ public class Main {
 
                                     if (!(curr instanceof MonthlyWorker)) {
                                         System.out.println("Type your sallary");
-                                        float sallary = scannerFloat.nextFloat();
+                                        float sallary = proc.getFloat(floatMessage);
                                         MonthlyWorker novo;
                                         if (curr.getSindicateCard() == null) {
                                             novo = new MonthlyWorker(curr.getName(), curr.getAddress(), curr.getPaymentMethod(), sallary, curr.getId());
@@ -305,7 +310,7 @@ public class Main {
                                     if (!(curr instanceof HourlyWorker)) {
                                         HourlyWorker novo;
                                         System.out.println("Type your sallary/hour");
-                                        float sallary = scannerFloat.nextFloat();
+                                        float sallary = proc.getFloat(floatMessage);
 
                                         if (curr.getSindicateCard() == null) {
                                             novo = new HourlyWorker(curr.getName(), curr.getAddress(), curr.getPaymentMethod(), sallary, curr.getId());
@@ -324,9 +329,9 @@ public class Main {
                                 {
                                     if (!(curr instanceof CommissionedWorker)) {
                                         System.out.println("Type your sallary ");
-                                        float sallary = scannerFloat.nextFloat();
+                                        float sallary = proc.getFloat(floatMessage);
                                         System.out.println("Type your commission percentage");
-                                        float commission_percentage = scannerFloat.nextFloat();
+                                        float commission_percentage = proc.getFloat(floatMessage);
                                         CommissionedWorker novo;
                                         if (curr.getSindicateCard() == null) {
                                             novo = new CommissionedWorker(curr.getName(), curr.getAddress(), curr.getPaymentMethod(), sallary, commission_percentage, curr.getId());
@@ -346,28 +351,28 @@ public class Main {
                             }
                             case 4: {
                                 System.out.println("Type the new Payment Method");
-                                String pay = scannerString.nextLine();
+                                String pay = proc.getString(stringMessage,true);
                                 curr.setPaymentMethod(pay);
                                 break;
                             }
                             case 5: {
                                 if (curr.getSindicateCard() == null) {
                                     System.out.println("Do you want to be a member of the sindicate?  1 - Yes, 0 - No");
-                                    int yes = scannerInt.nextInt();
+                                    int yes = proc.getInteger(intMessage);
                                     if (yes == 1) {
                                         System.out.println("Type your contributtion");
 
                                         int id_sindicate = sindicate_counter;
                                         sindicate_counter++;
                                         System.out.println("Type your contribbution to the sindicate");
-                                        float fixed_tax = scannerFloat.nextFloat();
+                                        float fixed_tax = proc.getFloat(floatMessage);
                                         SindicateWorker sindicate_card = new SindicateWorker(id_sindicate, fixed_tax);
                                         curr.setSindicateCard(sindicate_card);
                                         System.out.println("You have succesfuly joined the sindicate!");
                                     }
                                 } else {
                                     System.out.println("Do you want to leave he sindicate?  1 - Yes, 0 - No");
-                                    int yes = scannerInt.nextInt();
+                                    int yes = proc.getInteger(intMessage);
                                     if (yes == 1) {
                                         curr.setSindicateCard(null);
                                         System.out.println("You have succesfuly quit the sindicate!");
@@ -382,7 +387,7 @@ public class Main {
                                 else
                                 {
                                     System.out.println("What would you like your new ID to be?");
-                                    int new_id = scannerInt.nextInt();
+                                    int new_id = proc.getInteger(intMessage);
                                     int found=0;
                                     for(Employee e: employeesList)
                                     {
@@ -414,7 +419,7 @@ public class Main {
                                 else
                                 {
                                     System.out.println("How much would you like to contribute?");
-                                    int new_id = scannerInt.nextInt();
+                                    int new_id = proc.getInteger(intMessage);
                                     int found=0;
                                     for(Employee e: employeesList)
                                     {
@@ -450,11 +455,11 @@ public class Main {
                 case 7: {
                     undo.push(new Backup(employeesList,sindicate_counter,employee_counter));
                     System.out.println("Type the day");
-                    int day = scannerInt.nextInt();
+                    int day = proc.getInteger(intMessage);
                     System.out.println("Type the month");
-                    int month = scannerInt.nextInt();
+                    int month = proc.getInteger(intMessage);
                     System.out.println("Type the year");
-                    int year = scannerInt.nextInt();
+                    int year = proc.getInteger(intMessage);
                     Calendar c = Calendar.getInstance();
                     c.set(year, month - 1, day);
                     Map<Integer, String> Agenda;
@@ -818,7 +823,7 @@ public class Main {
                 case 8: {
 
                     System.out.println("Do you want to UNDO(1) or REDO(2)?");
-                    int choose = scannerInt.nextInt();
+                    int choose = proc.getInteger(intMessage);
                     if (choose==1)
                     {
                         if (!undo.isEmpty())
@@ -861,9 +866,9 @@ public class Main {
 
                     System.out.println("What payment form do you want?");
                     System.out.printf("1 - First day of the monty\n2 - Seventh day of the month\n3- Last WorkDay of the Month\n4 - Every Monday\n5- Every Friday\n6- Every other Monday\n");
-                    int newPaymentAgenda = scannerInt.nextInt();
+                    int newPaymentAgenda = proc.getInteger(intMessage);
                     System.out.println("Type the employee ID");
-                    int id = scannerInt.nextInt();
+                    int id = proc.getInteger(intMessage);
                     int pos = -1;
                     for (int i = 0; i < employeesList.size(); i++) {
                         if (employeesList.get(i).getId() == id) {
@@ -884,9 +889,9 @@ public class Main {
             }
         } while (op != 0);
 
-        scannerFloat.close();
-        scannerInt.close();
-        scannerString.close();
+    //*    scannerFloat.close();
+    //    scannerInt.close();
+   //     scannerString.close();
 
     }
 
