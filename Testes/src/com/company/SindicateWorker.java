@@ -51,6 +51,19 @@ public class SindicateWorker {
         //return (ArrayList<CheckInOut>) cards.stream().filter(card -> card.happennedBetween(start, end)).collect(Collectors.toList());
 
     }
+
+    public float getSumTaxesPeriodTime(Calendar start, Calendar end)
+    {
+        float sum=0;
+        ArrayList<ServiceTaxes> list = getTaxesPeriodTime(start,end);
+        for(ServiceTaxes s: list)
+        {
+            sum+=s.getValue();
+        }
+
+    return sum;
+    }
+
     public int getId() {
         return id;
     }

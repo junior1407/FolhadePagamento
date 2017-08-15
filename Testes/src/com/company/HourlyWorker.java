@@ -7,7 +7,7 @@ import java.util.Calendar;
 /**
  * Created by alunoic on 28/07/17.
  */
-public class HourlyWorker extends Employee {
+public class HourlyWorker extends Employee<HourlyWorker> {
 
 
     private float hour_sallary;
@@ -33,6 +33,28 @@ public class HourlyWorker extends Employee {
         return new HourlyWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getHour_sallary(),copy,getPayment_day());
     }
 
+    @Override
+    public Paycheck getPaycheck(HourlyWorker e, Calendar c) {
+
+        if (!isPaidToday(e,c)) {
+            return null;
+        }
+        int fraction = getFraction(e,c);
+        Calendar required_date = e.getRequiredDate(e,c);
+        Calendar yesterday = (Calendar) c.clone();
+        yesterday.add(Calendar.DAY_OF_MONTH, -1);
+
+        float sallary= getSumCardsPeriodTime(required_date,yesterday);
+        if (getSindicateCard()!=null)
+        {
+            sallary-=getSindicateCard().getSumTaxesPeriodTime(required_date,yesterday);
+            sallary-= getSindicateCard().getFixed_tax()/fraction;
+        }
+
+
+        return new Paycheck(e, sallary);
+    }
+
 
     public HourlyWorker(String name, String address, String paymentMethod, float hour_sallary, int id) {
         super(name, address, paymentMethod, id);
@@ -47,6 +69,25 @@ public class HourlyWorker extends Employee {
         setPayment_day(Employee.PAYMENT_EVERY_FRIDAY);
         cards = new ArrayList<CheckInOut>();
     }
+
+
+    public float getSumCardsPeriodTime(Calendar start, Calendar end)
+    {
+
+        ArrayList<CheckInOut> checks = getCardsPeriodTime(start, end);
+        float sum = 0;
+        for (CheckInOut check : checks) {
+            if (check.getWorkedHours() >= 8) {
+               sum += 8 * getHour_sallary();
+                sum += ((check.getWorkedHours() - 8) * getHour_sallary()) * 1.5;
+            } else {
+                sum += check.getWorkedHours() * getHour_sallary();
+            }
+        }
+    return sum;
+    }
+
+
 
     public ArrayList<CheckInOut> getCardsPeriodTime(Calendar start, Calendar end) {
 
