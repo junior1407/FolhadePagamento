@@ -29,9 +29,14 @@ public class HourlyWorker extends Employee<HourlyWorker> {
             copy.add(c.getCopy());
         }
 
-
-        return new HourlyWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getHour_sallary(),copy,getPayment_day());
-    }
+try {
+    return new HourlyWorker(getName(), getAddress(), getSindicateCard().getCopy(), getPaymentMethod(), getId(), getHour_sallary(), copy, getPayment_day());
+}
+catch(NullPointerException e)
+{
+    return new HourlyWorker(getName(), getAddress(), null, getPaymentMethod(), getId(), getHour_sallary(), copy, getPayment_day());
+}
+        }
 
     @Override
     public Paycheck getPaycheck(HourlyWorker e, Calendar c) {

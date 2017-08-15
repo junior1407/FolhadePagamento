@@ -6,7 +6,7 @@ import java.util.Calendar;
 /**
  * Created by alunoic on 28/07/17.
  */
-public class    MonthlyWorker extends Employee<MonthlyWorker>  {
+public class  MonthlyWorker extends Employee<MonthlyWorker>  {
 
     private float sallary;
 
@@ -24,8 +24,16 @@ public class    MonthlyWorker extends Employee<MonthlyWorker>  {
 
     public MonthlyWorker getCopy()
     {
-        return new MonthlyWorker(getName(),getAddress(),getSindicateCard().getCopy(),getPaymentMethod(),getId(),getSallary(),getPayment_day());
-    }
+        try {
+            return new MonthlyWorker(getName(), getAddress(), getSindicateCard().getCopy(), getPaymentMethod(), getId(), getSallary(), getPayment_day());
+        }
+        catch (NullPointerException e)
+        {
+
+            return new MonthlyWorker(getName(), getAddress(), null, getPaymentMethod(), getId(), getSallary(), getPayment_day());
+        }
+
+        }
 
     @Override
     public Paycheck getPaycheck(MonthlyWorker e, Calendar c) {

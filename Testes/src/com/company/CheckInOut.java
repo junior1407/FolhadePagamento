@@ -48,7 +48,9 @@ public class CheckInOut {
     }
 
     public float getWorkedHours() {
+        String s1= ""+Main.getDateString(entrada)+"  "+ entrada.get(Calendar.HOUR_OF_DAY)+ "   "+entrada.get(Calendar.MINUTE);
         int start_time = entrada.get(Calendar.HOUR_OF_DAY) * 60 + entrada.get(Calendar.MINUTE);
+        String s2= ""+Main.getDateString(saida)+"  "+ saida.get(Calendar.HOUR_OF_DAY) +"   "+ saida.get(Calendar.MINUTE);
         int end_time = saida.get(Calendar.HOUR_OF_DAY) * 60 + saida.get(Calendar.MINUTE);
         int diferrence = end_time - start_time;
         return (float) (diferrence) / 60;

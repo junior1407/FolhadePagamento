@@ -97,7 +97,9 @@ public abstract class Employee <T extends Employee> {
     public boolean isPaidToday(Employee e, Calendar c)
     {
 
+
         int day = c.get(Calendar.DAY_OF_MONTH);
+
 
         int last_workday= Main.getLastWorkDay(c);
 
@@ -125,6 +127,7 @@ public abstract class Employee <T extends Employee> {
     public int getFraction(Employee e, Calendar c) {
         int day = c.get(Calendar.DAY_OF_MONTH);
         int fraction = -1;
+
         int last_workday = Main.getLastWorkDay(c);
 
 
@@ -145,6 +148,7 @@ public abstract class Employee <T extends Employee> {
         return fraction;
     }
     public Calendar getRequiredDate(Employee e, Calendar c) {
+
 
         int day = c.get(Calendar.DAY_OF_MONTH);
         int last_workday = Main.getLastWorkDay(c);

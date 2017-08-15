@@ -149,20 +149,21 @@ public class Main {
                             HourlyWorker curr = (HourlyWorker) employeesList.get(pos);
                             System.out.println("Type the day");
                             int day = proc.getInteger(intMessage);
-                            System.out.println("Type the day");
+                            System.out.println("Type the month");
                             int month = proc.getInteger(intMessage);
-                            System.out.println("Type the day");
+                            System.out.println("Type the year");
                             int year = proc.getInteger(intMessage);
-                            System.out.println("Type the day");
+                            System.out.println("Type the hour");
                             int hour_init = proc.getInteger(intMessage);
-                            System.out.println("Type the day");
+                            System.out.println("Type the min");
                             int min_init = proc.getInteger(intMessage);
-                            System.out.println("Type the day");
+                            System.out.println("Type the hour_end");
                             int hour_final = proc.getInteger(intMessage);
-                            System.out.println("Type the day");
+                            System.out.println("Type the mind_end");
                             int min_final = proc.getInteger(intMessage);
-                            CheckInOut card = new CheckInOut(day, month - 1, year, hour_init, min_init, hour_final, min_final);
+                            CheckInOut card = new CheckInOut(day, month - 1, year, hour_init, hour_final,min_init, min_final);
                             curr.AddCard(card);
+                            System.out.printf("%d:%d   %d:%d",card.getEntrada().get(Calendar.HOUR_OF_DAY), card.getEntrada().get(Calendar.MINUTE),card.getSaida().get(Calendar.HOUR_OF_DAY), card.getSaida().get(Calendar.MINUTE));
                             System.out.println("Check In/Out Registered Successfuly!!!");
                         } else {
                             System.out.println("The employee is not a Hourly Worker!");
@@ -462,360 +463,33 @@ public class Main {
                     int year = proc.getInteger(intMessage);
                     Calendar c = Calendar.getInstance();
                     c.set(year, month - 1, day);
+
                     Map<Integer, String> Agenda;
+                    String s1=getDateString(c);
                     int last_workday = getLastWorkDay(c);
+                    String s2=getDateString(c);
                     int last_day_month = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    String s3=getDateString(c);
                     int curr_weekday = c.get(Calendar.DAY_OF_WEEK);
                     String date = getDateString(c);
                     for (Employee e : employeesList) {
-
-
-                        if ((e.getPayment_day() == 1) && (day == 1)) {
-
-                            Calendar first_day_lastmonth = (Calendar) c.clone();
-                            first_day_lastmonth.add(Calendar.MONTH, -1);
-                            first_day_lastmonth.set(Calendar.DAY_OF_MONTH, 1);
-                            Calendar yesterday = (Calendar) c.clone();
-                            yesterday.add(Calendar.DAY_OF_MONTH, -1);
-
-
-                            float sindicateTax=0;
-                            if (e.getSindicateCard()!= null)
-                            {
-                                sindicateTax+= e.getSindicateCard().getFixed_tax();
-                                ArrayList<ServiceTaxes> taxes_list= e.getSindicateCard().getTaxesPeriodTime(first_day_lastmonth,yesterday);
-                                for(ServiceTaxes s: taxes_list)
-                                {
-                                    sindicateTax+=s.getValue();
-                                }
-                            }
-
-                            if (e instanceof MonthlyWorker) {
-                                Paycheck p = new Paycheck(e, ((MonthlyWorker) e).getSallary() - sindicateTax);
-                                agenda.addToAgenda(date, p);
-                            }
-                            if (e instanceof HourlyWorker) {
-                                ArrayList<CheckInOut> checks = ((HourlyWorker) e).getCardsPeriodTime(first_day_lastmonth, yesterday);
-                                float salary_soFar = 0;
-                                for (CheckInOut check : checks) {
-                                    if (check.getWorkedHours() >= 8) {
-                                        salary_soFar += 8 * ((HourlyWorker) e).getHour_sallary();
-                                        salary_soFar += ((check.getWorkedHours() - 8) * ((HourlyWorker) e).getHour_sallary()) * 1.5;
-                                    } else {
-                                        salary_soFar += check.getWorkedHours() * ((HourlyWorker) e).getHour_sallary();
-                                    }
-                                }
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-
-                            }
-                            if (e instanceof CommissionedWorker) {
-                                CommissionedWorker curr = (CommissionedWorker) e;
-                                float salary_soFar = 0;
-                                salary_soFar += curr.getFixed_sallary();
-
-
-                                ArrayList<Sales> sales = curr.getSalesPeriodTime(first_day_lastmonth, yesterday);
-                                for (Sales s : sales) {
-                                    salary_soFar += s.getValue() * curr.getCommission_percentage();
-                                }
-
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-                            }
-
-
-                        } else if ((e.getPayment_day() == 2) && (day == 7)) {
-
-
-                            Calendar seventh_day_lastmonth = (Calendar) c.clone();
-                            seventh_day_lastmonth.add(Calendar.MONTH, -1);
-                            seventh_day_lastmonth.set(Calendar.DAY_OF_MONTH, 7);
-                            Calendar yesterday = (Calendar) c.clone();
-                            yesterday.add(Calendar.DAY_OF_MONTH, -1);
-
-                            float sindicateTax=0;
-                            if (e.getSindicateCard()!= null)
-                            {
-                                sindicateTax+= e.getSindicateCard().getFixed_tax();
-                                ArrayList<ServiceTaxes> taxes_list= e.getSindicateCard().getTaxesPeriodTime(seventh_day_lastmonth,yesterday);
-                                for(ServiceTaxes s: taxes_list)
-                                {
-                                    sindicateTax+=s.getValue();
-                                }
-                            }
-
-
-                            if (e instanceof MonthlyWorker) {
-                                Paycheck p = new Paycheck(e, ((MonthlyWorker) e).getSallary()-sindicateTax);
-                                agenda.addToAgenda(date, p);
-                            }
-                            if (e instanceof HourlyWorker) {
-
-
-                                ArrayList<CheckInOut> checks = ((HourlyWorker) e).getCardsPeriodTime(seventh_day_lastmonth, yesterday);
-                                float salary_soFar = 0;
-                                for (CheckInOut check : checks) {
-                                    if (check.getWorkedHours() >= 8) {
-                                        salary_soFar += 8 * ((HourlyWorker) e).getHour_sallary();
-                                        salary_soFar += ((check.getWorkedHours() - 8) * ((HourlyWorker) e).getHour_sallary()) * 1.5;
-                                    } else {
-                                        salary_soFar += check.getWorkedHours() * ((HourlyWorker) e).getHour_sallary();
-                                    }
-                                }
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-
-                            }
-                            if (e instanceof CommissionedWorker) {
-                                CommissionedWorker curr = (CommissionedWorker) e;
-                                float salary_soFar = 0;
-                                salary_soFar += curr.getFixed_sallary();
-
-                                ArrayList<Sales> sales = curr.getSalesPeriodTime(seventh_day_lastmonth, yesterday);
-                                for (Sales s : sales) {
-                                    salary_soFar += s.getValue() * curr.getCommission_percentage();
-                                }
-
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-                            }
-
-
-                        } else if ((e.getPayment_day() == 3) && (day == last_workday)) {
-
-
-                            Calendar before_last_day_lastmonth = (Calendar) c.clone();
-                            before_last_day_lastmonth.add(Calendar.MONTH, -1);
-                            before_last_day_lastmonth.set(Calendar.DAY_OF_MONTH, getLastWorkDay(before_last_day_lastmonth));
-                            Calendar yesterday = (Calendar) c.clone();
-                            yesterday.add(Calendar.DAY_OF_MONTH, -1);
-                            float sindicateTax=0;
-                            if (e.getSindicateCard()!= null)
-                            {
-                                sindicateTax+= e.getSindicateCard().getFixed_tax();
-                                ArrayList<ServiceTaxes> taxes_list= e.getSindicateCard().getTaxesPeriodTime(before_last_day_lastmonth,yesterday);
-                                for(ServiceTaxes s: taxes_list)
-                                {
-                                    sindicateTax+=s.getValue();
-                                }
-                            }
-
-
-                            if (e instanceof MonthlyWorker) {
-                                Paycheck p = new Paycheck(e, ((MonthlyWorker) e).getSallary()-sindicateTax);
-                                agenda.addToAgenda(date, p);
-                            }
-                            if (e instanceof HourlyWorker) {
-
-
-                                ArrayList<CheckInOut> checks = ((HourlyWorker) e).getCardsPeriodTime(before_last_day_lastmonth, yesterday);
-                                float salary_soFar = 0;
-                                for (CheckInOut check : checks) {
-                                    if (check.getWorkedHours() >= 8) {
-                                        salary_soFar += 8 * ((HourlyWorker) e).getHour_sallary();
-                                        salary_soFar += ((check.getWorkedHours() - 8) * ((HourlyWorker) e).getHour_sallary()) * 1.5;
-                                    } else {
-                                        salary_soFar += check.getWorkedHours() * ((HourlyWorker) e).getHour_sallary();
-                                    }
-                                }
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-
-                            }
-                            if (e instanceof CommissionedWorker) {
-                                CommissionedWorker curr = (CommissionedWorker) e;
-                                float salary_soFar = 0;
-                                salary_soFar += curr.getFixed_sallary();
-                                ArrayList<Sales> sales = curr.getSalesPeriodTime(before_last_day_lastmonth, yesterday);
-                                for (Sales s : sales) {
-                                    salary_soFar += s.getValue() * curr.getCommission_percentage();
-                                }
-
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-                            }
-
-
-                        } else if ((e.getPayment_day() == 4) && (curr_weekday == Calendar.MONDAY)) {
-
-
-                            Calendar last_monday = getLastXDay(c, Calendar.MONDAY);
-                            Calendar yesterday = (Calendar) c.clone();
-                            yesterday.add(Calendar.DAY_OF_MONTH, -1);
-
-
-
-                            float sindicateTax=0;
-                            if (e.getSindicateCard()!= null)
-                            {
-                                sindicateTax+= e.getSindicateCard().getFixed_tax()/4;
-                                ArrayList<ServiceTaxes> taxes_list= e.getSindicateCard().getTaxesPeriodTime(last_monday,yesterday);
-                                for(ServiceTaxes s: taxes_list)
-                                {
-                                    sindicateTax+=s.getValue();
-                                }
-                            }
-
-                            if (e instanceof MonthlyWorker) {
-                                Paycheck p = new Paycheck(e,( ((MonthlyWorker) e).getSallary() / 4)-sindicateTax);
-                                agenda.addToAgenda(date, p);
-                            }
-                            if (e instanceof HourlyWorker) {
-
-
-                                ArrayList<CheckInOut> checks = ((HourlyWorker) e).getCardsPeriodTime(last_monday, yesterday);
-                                float salary_soFar = 0;
-                                for (CheckInOut check : checks) {
-                                    if (check.getWorkedHours() >= 8) {
-                                        salary_soFar += 8 * ((HourlyWorker) e).getHour_sallary();
-                                        salary_soFar += ((check.getWorkedHours() - 8) * ((HourlyWorker) e).getHour_sallary()) * 1.5;
-                                    } else {
-                                        salary_soFar += check.getWorkedHours() * ((HourlyWorker) e).getHour_sallary();
-                                    }
-                                }
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-
-                            }
-                            if (e instanceof CommissionedWorker) {
-                                CommissionedWorker curr = (CommissionedWorker) e;
-                                float salary_soFar = 0;
-                                salary_soFar += curr.getFixed_sallary() / 4;
-                                ArrayList<Sales> sales = curr.getSalesPeriodTime(last_monday, yesterday);
-                                for (Sales s : sales) {
-                                    salary_soFar += s.getValue() * curr.getCommission_percentage();
-                                }
-
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-                            }
-
-
-                        } else if ((e.getPayment_day() == 5) && (curr_weekday == Calendar.FRIDAY)) {
-
-
-                            Calendar last_monday = getLastXDay(c, Calendar.FRIDAY);
-                            Calendar yesterday = (Calendar) c.clone();
-                            yesterday.add(Calendar.DAY_OF_MONTH, -1);
-
-
-
-                            float sindicateTax=0;
-                            if (e.getSindicateCard()!= null)
-                            {
-                                sindicateTax+= e.getSindicateCard().getFixed_tax()/4;
-                                ArrayList<ServiceTaxes> taxes_list= e.getSindicateCard().getTaxesPeriodTime(last_monday,yesterday);
-                                for(ServiceTaxes s: taxes_list)
-                                {
-                                    sindicateTax+=s.getValue();
-                                }
-                            }
-
-                            if (e instanceof MonthlyWorker) {
-                                Paycheck p = new Paycheck(e, (((MonthlyWorker) e).getSallary() / 4)-sindicateTax);
-                                agenda.addToAgenda(date, p);
-                            }
-                            if (e instanceof HourlyWorker) {
-
-                                ArrayList<CheckInOut> checks = ((HourlyWorker) e).getCardsPeriodTime(last_monday, yesterday);
-                                float salary_soFar = 0;
-                                for (CheckInOut check : checks) {
-                                    if (check.getWorkedHours() >= 8) {
-                                        salary_soFar += 8 * ((HourlyWorker) e).getHour_sallary();
-                                        salary_soFar += ((check.getWorkedHours() - 8) * ((HourlyWorker) e).getHour_sallary()) * 1.5;
-                                    } else {
-                                        salary_soFar += check.getWorkedHours() * ((HourlyWorker) e).getHour_sallary();
-                                    }
-                                }
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-
-                            }
-                            if (e instanceof CommissionedWorker) {
-                                CommissionedWorker curr = (CommissionedWorker) e;
-                                float salary_soFar = 0;
-                                salary_soFar += curr.getFixed_sallary() / 4;
-
-
-                                ArrayList<Sales> sales = curr.getSalesPeriodTime(last_monday, yesterday);
-                                for (Sales s : sales) {
-                                    salary_soFar += s.getValue() * curr.getCommission_percentage();
-                                }
-
-                                Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                agenda.addToAgenda(getDateString(c), p);
-                            }
-
-
-                        } else if ((e.getPayment_day() == 6) && (curr_weekday == Calendar.MONDAY)) {
-
-                            Calendar lastMonday = getLastXDay(c, Calendar.MONDAY);
-                            String previous_monday = getDateString(lastMonday);
-                            Calendar last__last_monday = getLastXDay(lastMonday, Calendar.MONDAY);
-                            Calendar yesterday = (Calendar) c.clone();
-                            yesterday.add(Calendar.DAY_OF_MONTH, -1);
-
-                            float sindicateTax=0;
-                            if (e.getSindicateCard()!= null)
-                            {
-                                sindicateTax+= e.getSindicateCard().getFixed_tax()/2;
-                                ArrayList<ServiceTaxes> taxes_list= e.getSindicateCard().getTaxesPeriodTime(last__last_monday,yesterday);
-                                for(ServiceTaxes s: taxes_list)
-                                {
-                                    sindicateTax+=s.getValue();
-                                }
-                            }
-
-
-                            if (!agenda.wasPaid(date, e)) {
-                                if (e instanceof MonthlyWorker) {
-                                    Paycheck p = new Paycheck(e, (((MonthlyWorker) e).getSallary() / 2)-sindicateTax);
-                                    agenda.addToAgenda(date, p);
-                                }
-                                if (e instanceof HourlyWorker) {
-
-
-                                    ArrayList<CheckInOut> checks = ((HourlyWorker) e).getCardsPeriodTime(last__last_monday, yesterday);
-                                    float salary_soFar = 0;
-                                    for (CheckInOut check : checks) {
-                                        if (check.getWorkedHours() >= 8) {
-                                            salary_soFar += 8 * ((HourlyWorker) e).getHour_sallary();
-                                            salary_soFar += ((check.getWorkedHours() - 8) * ((HourlyWorker) e).getHour_sallary()) * 1.5;
-                                        } else {
-                                            salary_soFar += check.getWorkedHours() * ((HourlyWorker) e).getHour_sallary();
-                                        }
-                                    }
-                                    Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                    agenda.addToAgenda(getDateString(c), p);
-
-                                }
-                                if (e instanceof CommissionedWorker) {
-                                    CommissionedWorker curr = (CommissionedWorker) e;
-                                    float salary_soFar = 0;
-                                    salary_soFar += curr.getFixed_sallary() / 2;
-
-
-
-
-                                    ArrayList<Sales> sales = curr.getSalesPeriodTime(last__last_monday, yesterday);
-                                    for (Sales s : sales) {
-                                        salary_soFar += s.getValue() * curr.getCommission_percentage();
-                                    }
-
-                                    Paycheck p = new Paycheck(e, salary_soFar-sindicateTax);
-                                    agenda.addToAgenda(getDateString(c), p);
-                                }
-                            }
+                        Paycheck p = e.getPaycheck(e, c);
+                        if (p!=null)
+                        {
+                            agenda.addToAgenda(getDateString(c), e.getPaycheck(e,c));
+                        }
+
+                    }
+
+                    ArrayList<Paycheck> list = agenda.getPayments().get(getDateString(c));
+                    if (list != null) {
+                        System.out.println("The following Employees will be paid");
+
+                        for (Paycheck p : list) {
+                            System.out.printf("Name: %s | Salary: %f", p.getEmployee().getName(), p.getMoney());
                         }
                     }
 
-
-                    System.out.println("The following Employees will be paid");
-                    ArrayList<Paycheck> list = agenda.getPayments().get(getDateString(c));
-                    for (Paycheck p : list) {
-                        System.out.printf("Name: %s | Salary: %f", p.getEmployee().getName(), p.getMoney());
-                    }
                     System.out.println();
                     break;
 
@@ -876,7 +550,7 @@ public class Main {
                             break;
                         }
                     }
-                    if (pos != -1) {
+                    if (pos == -1) {
                         System.out.println("Employee not found");
                     }
                     else
@@ -900,20 +574,22 @@ public class Main {
     }
 
     public static int getLastWorkDay(Calendar c) {
-        int last_day_month = c.getActualMaximum(Calendar.DATE);
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), last_day_month);
-        while (c.get(Calendar.DAY_OF_WEEK) > Calendar.FRIDAY || c.get(Calendar.DAY_OF_WEEK) <= Calendar.SUNDAY) {
-            c.roll(Calendar.DATE, false);
+        Calendar d= (Calendar) c.clone();
+        int last_day_month = d.getActualMaximum(Calendar.DATE);
+        d.set(d.get(Calendar.YEAR), d.get(Calendar.MONTH), last_day_month);
+        while (d.get(Calendar.DAY_OF_WEEK) > Calendar.FRIDAY || d.get(Calendar.DAY_OF_WEEK) <= Calendar.SUNDAY) {
+            d.roll(Calendar.DATE, false);
         }
-        return c.get(Calendar.DAY_OF_MONTH);
+        return d.get(Calendar.DAY_OF_MONTH);
     }
 
     public static Calendar getLastXDay(Calendar c, int day_week) {
-        c.roll(Calendar.DAY_OF_YEAR, false);
-        while (c.get(Calendar.DAY_OF_WEEK) != day_week) {
-            c.roll(Calendar.DAY_OF_YEAR, false);
+     Calendar d= (Calendar) c.clone();
+        d.roll(Calendar.DAY_OF_YEAR, false);
+        while (d.get(Calendar.DAY_OF_WEEK) != day_week) {
+            d.roll(Calendar.DAY_OF_YEAR, false);
         }
-        return c;
+        return d;
 
     }
 

@@ -27,9 +27,15 @@ public class CommissionedWorker extends Employee<CommissionedWorker> {
         {
             copy.add(s.getCopy());
         }
-        return new CommissionedWorker(getName(),getAddress(),getSindicateCard().getCopy(),
-                getPaymentMethod(),getId(),getFixed_sallary(),getCommission_percentage(),copy,getPayment_day());
-
+        try {
+            return new CommissionedWorker(getName(), getAddress(), getSindicateCard().getCopy(),
+                    getPaymentMethod(), getId(), getFixed_sallary(), getCommission_percentage(), copy, getPayment_day());
+        }
+        catch (NullPointerException e)
+        {
+            return new CommissionedWorker(getName(), getAddress(), null,
+                    getPaymentMethod(), getId(), getFixed_sallary(), getCommission_percentage(), copy, getPayment_day());
+        }
     }
 
     @Override
